@@ -1,0 +1,9 @@
+name: "AWS S3 Bucket Sync"
+description: "Sync a directory to an AWS S3 repository"
+author: pasujemito
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: refresh-cw
+  color: yellow
