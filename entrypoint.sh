@@ -2,7 +2,7 @@
 
 set -e
 
-[ -z "$AWS_S3_BUCKET" ] || (echo "AWS_S3_BUCKET is not set. Quitting."; exit 1)
+[ -z "$AWS_S3_BUCKET" ] || (echo "AWS_S3_BUCKET ($AWS_S3_BUCKET) is not set. Quitting."; exit 1)
 [ -z "$AWS_ACCESS_KEY_ID" ] || (echo "AWS_ACCESS_KEY_ID is not set. Quitting."; exit 1)
 [ -z "$AWS_SECRET_ACCESS_KEY" ] || (echo "AWS_SECRET_ACCESS_KEY is not set. Quitting."; exit 1)
 [ -z "$AWS_REGION" ] || AWS_REGION="us-east-1"
