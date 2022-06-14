@@ -12,16 +12,19 @@ set -e
 
 PROFILE="s3-sync-action"
 
+# Setup AWS Credentials
 aws configure set aws_access_key_id "${AWS_ACCESS_KEY_ID}" --profile $PROFILE
 aws configure set aws_secret_access_key "${AWS_SECRET_ACCESS_KEY}" --profile $PROFILE
 aws configure set region ${AWS_REGION} --profile $PROFILE
 aws configure set output "text" --profile $PROFILE
 
-cat ~/.aws/credentials
+# Create bucket if one does not exist
+aws s3api head-object --bucket "${AWS_S3_BUCKET}" --key index.html > /dev/null || aws s3api create-bucket --bucket ${AWS_S3_BUCKET} --region ${AWS_REGION} --create-bucket-configuration LocationConstraint=${AWS_REGION} > /dev/null
 
-# Sync using our dedicated profile and suppress verbose messages.
-# All other flags are optional via the `args:` directive.
+# Sync files
 aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} --profile ${PROFILE} --no-progress --acl public-read --follow-symlinks --delete
+
+# Create website
 aws s3 website s3://${AWS_S3_BUCKET}/${DEST_DIR} --index-document ${S3_WEBSITE_INDEX} --error-document ${S3_WEBSITE_ERROR}
 
-echo "http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/"
+echo "${APP_URL}" && echo "http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/"
