@@ -12,9 +12,9 @@ set -e
 
 PROFILE="s3-sync-action"
 
-aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" --profile $PROFILE && \
-aws configure set aws_secret_access_key "$AWS_ACCESS_KEY_SECRET" --profile $PROFILE && \
-aws configure set region $AWS_REGION --profile $PROFILE && \
+aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" --profile $PROFILE
+aws configure set aws_secret_access_key "$AWS_ACCESS_KEY_SECRET" --profile $PROFILE
+aws configure set region $AWS_REGION --profile $PROFILE
 aws configure set output "text" --profile $PROFILE
 
 # Sync using our dedicated profile and suppress verbose messages.
