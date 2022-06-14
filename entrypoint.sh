@@ -45,6 +45,6 @@ aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} --profile ${PROFI
 aws s3 website s3://${AWS_S3_BUCKET}/${DEST_DIR} --index-document ${S3_WEBSITE_INDEX} --error-document ${S3_WEBSITE_ERROR}
 
 # Update Bucket Policy
-aws a3api put-bucket-policy --bucket --policy ${S3_WEBSITE_POLICY}
+aws a3api put-bucket-policy --bucket --policy "$S3_WEBSITE_POLICY"
 
 echo "${APP_URL:"http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/}"
