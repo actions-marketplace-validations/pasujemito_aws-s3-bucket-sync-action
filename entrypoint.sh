@@ -27,4 +27,4 @@ aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} --profile ${PROFI
 # Create website
 aws s3 website s3://${AWS_S3_BUCKET}/${DEST_DIR} --index-document ${S3_WEBSITE_INDEX} --error-document ${S3_WEBSITE_ERROR}
 
-echo "${APP_URL}" && echo "http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/"
+echo "${APP_URL:"http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/}"
