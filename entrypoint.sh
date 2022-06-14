@@ -11,6 +11,23 @@ set -e
 [ -z "$S3_WEBSITE_ERROR" ] && S3_WEBSITE_ERROR="error.html" && (echo "S3_WEBSITE_ERROR set to default: $S3_WEBSITE_ERROR")
 
 PROFILE="s3-sync-action"
+S3_WEBSITE_POLICY <<- EOM
+{
+    "Version": "2012-10-17",
+    "Id": "PolicyForPublicWebsiteContent",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::webapp-epod-tracker/static/*"
+        }
+    ]
+}
+EOM
 
 # Setup AWS Credentials
 aws configure set aws_access_key_id "${AWS_ACCESS_KEY_ID}" --profile $PROFILE
@@ -26,5 +43,8 @@ aws s3 sync ${SOURCE_DIR:-.} s3://${AWS_S3_BUCKET}/${DEST_DIR} --profile ${PROFI
 
 # Create website
 aws s3 website s3://${AWS_S3_BUCKET}/${DEST_DIR} --index-document ${S3_WEBSITE_INDEX} --error-document ${S3_WEBSITE_ERROR}
+
+# Update Bucket Policy
+aws a3api put-bucket-policy --bucket --policy ${S3_WEBSITE_POLICY}
 
 echo "${APP_URL:"http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/}"
