@@ -12,21 +12,21 @@ set -e
 [ -z "$S3_WEBSITE_ERROR" ] && S3_WEBSITE_ERROR="error.html" && (echo "S3_WEBSITE_ERROR set to default: $S3_WEBSITE_ERROR")
 [ -z "$URL_EXPIRY" ] && URL_EXPIRY="300" && (echo "URL_EXPIRY set to default: $URL_EXPIRY")
 [ -z "$S3_WEBSITE_POLICY" ] && S3_WEBSITE_POLICY=$(cat <<-END
-    {
-        "Version": "2012-10-17",
-        "Id": "PolicyForPublicWebsiteContent",
-        "Statement": [
-            {
-                "Sid": "PublicReadGetObject",
-                "Effect": "Allow",
-                "Principal": {
-                    "AWS": "*"
-                },
-                "Action": "s3:GetObject",
-                "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+/}static/*"
-            }
-        ]
-    }
+{
+    "Version": "2012-10-17",
+    "Id": "PolicyForPublicWebsiteContent",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+/}static/*"
+        }
+    ]
+}
 END
 )
 
