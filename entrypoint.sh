@@ -53,6 +53,9 @@ fi
 # Update website policy
 aws s3api put-bucket-policy --bucket $AWS_S3_BUCKET --policy "$S3_WEBSITE_POLICY"
 
-# Geberate pre-signed URLs for file
+# Generate pre-signed URLs for file
 PRESIGNED_URL=$(aws s3 presign s3://$AWS_S3_BUCKET${DEST_DIR:+/}/$S3_WEBSITE_INDEX  --expires-in $URL_EXPIRY)
-echo $PRESIGNED_URL
+
+# Set Outputs for Github Actions
+echo "::set-output name=output_website_url::http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/"
+echo "::set-output name=output_presigned_url::$PRESIGNED_URL"
