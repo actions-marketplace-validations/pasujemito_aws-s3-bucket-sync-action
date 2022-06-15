@@ -38,7 +38,7 @@ aws configure set output "text" --profile $AWS_IAM_PROFILE
 
 # Create bucket if one does not exists in the region
 [ $AWS_REGION != "us-east-1" ] && REGION_ARGS="--create-bucket-configuration LocationConstraint=$AWS_REGION"
-aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null && echo "exists" || echo "creating" && aws s3api create-bucket --bucket $AWS_S3_BUCKET --region $AWS_REGION $REGION_ARGS > /dev/null
+aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null && echo "Skipping bucket creation, already exists!" || aws s3api create-bucket --bucket $AWS_S3_BUCKET --region $AWS_REGION $REGION_ARGS > /dev/null
 
 # Sync files
 aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PROFILE --no-progress
