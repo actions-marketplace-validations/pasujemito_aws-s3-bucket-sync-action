@@ -54,6 +54,6 @@ fi
 
 # Generate pre-signed URLs for file
 # TODO: Unmask AccountTokenId to display private URL
-# [ -z "$URL_EXPIRY" ] && URL_EXPIRY="300" && (echo "URL_EXPIRY set to default: $URL_EXPIRY")
-# PRESIGNED_URL=$(aws s3 presign s3://$AWS_S3_BUCKET${DEST_DIR:+/}/$S3_WEBSITE_INDEX  --expires-in $URL_EXPIRY)
-# echo "::set-output name=output_presigned_url::$PRESIGNED_URL"
+[ -z "$URL_EXPIRY" ] && URL_EXPIRY="300" && (echo "URL_EXPIRY set to default: $URL_EXPIRY")
+PRESIGNED_URL=$(aws s3 presign s3://$AWS_S3_BUCKET${DEST_DIR:+/}/$S3_WEBSITE_INDEX  --expires-in $URL_EXPIRY)
+echo "::set-output name=output_presigned_url::$PRESIGNED_URL"
