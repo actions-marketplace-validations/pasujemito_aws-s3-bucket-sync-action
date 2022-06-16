@@ -40,8 +40,9 @@ aws configure set output "text" --profile $AWS_IAM_PROFILE
 aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null && echo "Skipping bucket creation, already exists!" || aws s3api create-bucket --bucket $AWS_S3_BUCKET --region $AWS_REGION $REGION_ARGS > /dev/null
 
 # Sync files
-echo "$PWD"
-echo "${SOURCE_DIR:-.}"
+echo "Current working directory: $PWD"
+echo "Defined Source: ${SOURCE_DIR:-.}"
+echo "Test inputs: ${INPUT_WORKING_DIRECTORY}"
 aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PROFILE --no-progress
 
 # Create website if enabled and apply public policy
