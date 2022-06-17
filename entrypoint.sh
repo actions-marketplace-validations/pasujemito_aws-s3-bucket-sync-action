@@ -43,6 +43,7 @@ aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null
 echo "Current working directory: $PWD"
 echo "Defined Source: ${SOURCE_DIR:-.}"
 echo "Test inputs: ${INPUT_WORKING_DIRECTORY}"
+echo "$(ls -lash)"
 aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PROFILE --no-progress
 
 # Create website if enabled and apply public policy
