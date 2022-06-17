@@ -2,6 +2,8 @@
 
 set -e
 
+cd ${GITHUB_WORKSPACE}
+
 [ -z "$AWS_S3_BUCKET" ] && (echo "AWS_S3_BUCKET is not set. Quitting."; exit 1)
 [ -z "$AWS_ACCESS_KEY_ID" ] && (echo "AWS_ACCESS_KEY_ID is not set. Quitting."; exit 1)
 [ -z "$AWS_SECRET_ACCESS_KEY" ] && (echo "AWS_SECRET_ACCESS_KEY is not set. Quitting."; exit 1)
@@ -42,19 +44,7 @@ aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null
 # Sync files
 echo "Current working directory: $PWD"
 echo "Defined Source: ${SOURCE_DIR:-.}"
-echo "Test inputs: ${INPUT_WORKING_DIRECTORY}"
-
-while $# != 0
-do
-    case "$1" in
-    --working-dir) echo "hey" ;;
-    --max-pack-size|--window|--window-memory|--depth)
-        extra="$extra $1=$2"; shift ;;
-    --) shift; break;;
-    *)  usage ;;
-    esac
-    shift
-done
+ech $(ls -lash)
 
 aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PROFILE --no-progress
 
