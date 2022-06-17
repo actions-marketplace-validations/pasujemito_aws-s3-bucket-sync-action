@@ -6,9 +6,6 @@ set -e
 [ -z "$AWS_ACCESS_KEY_ID" ] && (echo "AWS_ACCESS_KEY_ID is not set. Quitting."; exit 1)
 [ -z "$AWS_SECRET_ACCESS_KEY" ] && (echo "AWS_SECRET_ACCESS_KEY is not set. Quitting."; exit 1)
 
-AWS_REGION=eu-west-1
-WEBSITE=true
-
 [ -z "$AWS_IAM_PROFILE" ] && AWS_IAM_PROFILE="s3-sync-action" && (echo "AWS_IAM_PROFILE set to default: $AWS_IAM_PROFILE")
 [ -z "$AWS_REGION" ] && AWS_REGION="us-east-1" && (echo "AWS_REGION set to default: $AWS_REGION")
 [ -z "$S3_WEBSITE_INDEX" ] && S3_WEBSITE_INDEX="index.html" && (echo "S3_WEBSITE_INDEX set to default: $S3_WEBSITE_INDEX")
@@ -46,9 +43,18 @@ aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null
 echo "Current working directory: $PWD"
 echo "Defined Source: ${SOURCE_DIR:-.}"
 echo "Test inputs: ${INPUT_WORKING_DIRECTORY}"
-if [[ $* == *--working-dir * ]]; then
-    echo "yes"
-fi
+
+while $# != 0
+do
+    case "$1" in
+    --working-dir) echo "hey" ;;
+    --max-pack-size|--window|--window-memory|--depth)
+        extra="$extra $1=$2"; shift ;;
+    --) shift; break;;
+    *)  usage ;;
+    esac
+    shift
+done
 
 aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PROFILE --no-progress
 
