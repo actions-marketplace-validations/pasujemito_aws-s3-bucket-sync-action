@@ -43,6 +43,7 @@ aws s3api head-object --bucket $AWS_S3_BUCKET --key $S3_WEBSITE_INDEX >/dev/null
 
 # Sync files
 echo "Github Wordking Dir: $GITHUB_WORKSPACE"
+echo "Github Wordking Dir: $INPUT_GITHUB_WORKSPACE"
 echo "Current working directory: $PWD"
 echo "Defined Source: ${SOURCE_DIR:-.}"
 echo $(ls -lash)
