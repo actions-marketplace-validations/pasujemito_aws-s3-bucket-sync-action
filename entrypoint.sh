@@ -24,7 +24,7 @@ cd ${GITHUB_WORKSPACE}
                 "AWS": "*"
             },
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+/}static/*"
+            "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+$DEST_DIR/}static/*"
         }
     ]
 }
