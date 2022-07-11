@@ -47,7 +47,7 @@ aws s3 sync ${SOURCE_DIR:-.} s3://$AWS_S3_BUCKET/$DEST_DIR --profile $AWS_IAM_PR
 # Create website if enabled and apply public policy
 if $WEBSITE
 then
-    aws s3 website s3://$AWS_S3_BUCKET/$DEST_DIR --index-document $S3_WEBSITE_INDEX --error-document ${S3_WEBSITE_ERROR}
+    aws s3 website s3://$AWS_S3_BUCKET --index-document ${DEST_DIR:+/}$S3_WEBSITE_INDEX --error-document ${DEST_DIR:+/}$S3_WEBSITE_ERROR
     aws s3api put-bucket-policy --bucket $AWS_S3_BUCKET --policy "$S3_WEBSITE_POLICY"
     
     echo "Webiste URL: http://$AWS_S3_BUCKET.s3-website-$AWS_REGION.amazonaws.com/"
