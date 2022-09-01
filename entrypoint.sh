@@ -21,7 +21,7 @@ cd ${GITHUB_WORKSPACE}
             "Sid": "PublicReadGetObject",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "$([ $CLOUDFRONT_AI ] && echo "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity $CLOUDFRONT_AI" || echo "*")"
+                "AWS": if [ $CLOUDFRONT_AI ];then echo "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity $CLOUDFRONT_AI"; else echo "*"; fi
             },
             "Action": "s3:GetObject",
             "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+$DEST_DIR/}*"
