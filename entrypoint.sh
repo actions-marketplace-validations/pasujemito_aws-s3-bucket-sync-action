@@ -12,6 +12,7 @@ cd ${GITHUB_WORKSPACE}
 [ -z "$AWS_REGION" ] && AWS_REGION="us-east-1" && (echo "AWS_REGION set to default: $AWS_REGION")
 [ -z "$S3_WEBSITE_INDEX" ] && S3_WEBSITE_INDEX="index.html" && (echo "S3_WEBSITE_INDEX set to default: $S3_WEBSITE_INDEX")
 [ -z "$S3_WEBSITE_ERROR" ] && S3_WEBSITE_ERROR="error.html" && (echo "S3_WEBSITE_ERROR set to default: $S3_WEBSITE_ERROR")
+[ -z "$CLOUDFRONT_AI" ] && CLOUDFRONT_AI="\"*\"" || CLOUDFRONT_AI="\"arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CLOUDFRONT_AI}\""
 [ -z "$S3_WEBSITE_POLICY" ] && S3_WEBSITE_POLICY=$(cat <<-END
 {
     "Version": "2012-10-17",
@@ -21,7 +22,7 @@ cd ${GITHUB_WORKSPACE}
             "Sid": "PublicReadGetObject",
             "Effect": "Allow",
             "Principal": {
-                "AWS": if [ $CLOUDFRONT_AI ];then echo "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity $CLOUDFRONT_AI"; else echo "*"; fi
+                "AWS": $CLOUDFRONT_AI
             },
             "Action": "s3:GetObject",
             "Resource": "arn:aws:s3:::$AWS_S3_BUCKET/${DEST_DIR:+$DEST_DIR/}*"
